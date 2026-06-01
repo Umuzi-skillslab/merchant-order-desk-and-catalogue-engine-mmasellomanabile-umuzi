@@ -1,3 +1,5 @@
+package com.paynestsystem.domain;
+
 //4. orderItem class: 
 
 public class OrderItem {

@@ -1,3 +1,5 @@
+    package com.paynestsystem.domain;
+    
     //2.Customer class using the same process I used for product
 
 public class Customer {

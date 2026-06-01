@@ -1,3 +1,5 @@
+package com.paynestsystem.domain;
+
 import java.util.*;
 //3. Order lifecycle:
 
