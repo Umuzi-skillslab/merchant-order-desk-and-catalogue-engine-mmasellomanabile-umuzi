@@ -1,6 +1,7 @@
 package com.paynestsystem.domain;
 
 import java.util.*;
+
 //3. Order lifecycle:
 
 public class Order {
@@ -36,27 +37,9 @@ public class Order {
         }
         return total;
     }
+//might need to add a lin to return items: list <orderitem>
 
-//print summary:
-
-    public void printSummary() {
-        System.out.println("Order Summary:");
-        System.out.println("Customer: " + customer.getName());
-
-        for (OrderItem item : items) {
-            String name = item.getProduct().getName();
-            int qty = item.getQuantity();
-            double subtotal = item.calcTotal();
-
-            System.out.println(name + " x" + qty + " = R" + subtotal);
-        }
-
-        System.out.println("Your total is: R" + calculateTotal());
-    }
-}
-
-
-//Order summary method:
+//Order/ print summary method:
 
  public void printSummary() {
     System.out.println("Order Summary:");
@@ -72,4 +55,5 @@ public class Order {
  }
 
  System.out.println(" Your total is: R" + calculateTotal());
+}
 }

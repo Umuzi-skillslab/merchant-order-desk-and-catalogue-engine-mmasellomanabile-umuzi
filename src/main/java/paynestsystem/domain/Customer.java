@@ -1,5 +1,8 @@
-    package com.paynestsystem.domain;
-    
+ package paynestsystem.domain;
+
+ 
+
+
     //2.Customer class using the same process I used for product
 
 public class Customer {
@@ -13,6 +16,7 @@ public class Customer {
         this.name = name;
         this.email = email;
     }
+//getters: 
 
     public int getId () {
         return id;

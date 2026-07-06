@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a6aa9f35-497d-4a5f-9749-b3b8da04f1ae" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.github/.keep" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Customer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Order.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OrderItem.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PaynestApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Product.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
-    </list>
+    <list default="true" id="a6aa9f35-497d-4a5f-9749-b3b8da04f1ae" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -18,10 +10,10 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 4,
-  "fromUser": false
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4,
+  &quot;fromUser&quot;: false
+}</component>
   <component name="ProjectId" id="3EWiVMEmhNjj2XEZENcFQn38m2H" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -32,6 +24,7 @@
     "Application.PaynestApplication.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
     "git-widget-placeholder": "main",

@@ -1,4 +1,4 @@
-package com.paynestsystem.domain;
+package paynestsystem.domain;
 //Product catalogue
 //1.Product class
 

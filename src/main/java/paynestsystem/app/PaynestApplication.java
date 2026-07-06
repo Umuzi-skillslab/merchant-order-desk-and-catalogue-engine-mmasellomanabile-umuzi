@@ -1,4 +1,6 @@
-package com.paynestsystem.app;
+package paynestsystem.app;
+
+import paynestsystem.domain.*;
 
 public class PaynestApplication {
     public static void main(String[] args) {
