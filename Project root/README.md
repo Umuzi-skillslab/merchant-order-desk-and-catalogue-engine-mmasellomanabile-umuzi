@@ -1,2 +1,39 @@
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-2e0aaae1b6195c2367325f4f02e2d04e9abb55f0b24a779b69b11b9e10269abc.svg)](https://classroom.github.com/online_ide?assignment_repo_id=24000900&assignment_repo_type=AssignmentRepo)
-# Merchant-order-desk-and-catalogue-engine
+# PayNest Merchant Order Desk and Catalogue Engine
+
+# Overview
+
+This Java application manages customers, products, and orders. It demonstrates Object-Oriented Programming (OOP) concepts such as classes, objects, and relationships between entities.
+
+# Project Structure
+
+- app - Contains the main application class.
+- domain - Contains Customer, Product, Order, and OrderItem classes.
+- service- Contains business logic such as printing order details.
+
+# Features
+
+- Create customers
+- Create products
+- Create orders
+- Add items to orders
+- Print order information
+
+# Technologies
+
+- Java
+- Maven
+- VS Code
+
+## Running the Application
+
+1. Open a terminal in the project root (the folder containing `pom.xml`).
+
+2. on Git bash, run this command :
+
+
+mvn clean compile
+mvn exec:java
+
+# Author
+
+Mmasello Manabile
