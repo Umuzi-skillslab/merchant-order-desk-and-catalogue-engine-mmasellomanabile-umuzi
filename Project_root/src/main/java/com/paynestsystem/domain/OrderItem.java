@@ -20,7 +20,7 @@ public class OrderItem {
     }
 
 
-    public double calcTotal() {
+    public double calculateTotal() {
         return product.getPrice()*quantity;
     }
 }

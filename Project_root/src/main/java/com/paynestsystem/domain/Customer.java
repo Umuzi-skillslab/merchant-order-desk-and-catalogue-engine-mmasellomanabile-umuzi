@@ -1,4 +1,4 @@
- package paynestsystem.domain;
+ package com.paynestsystem.domain;
 
  
 
