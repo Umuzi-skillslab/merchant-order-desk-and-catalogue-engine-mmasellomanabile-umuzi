@@ -26,6 +26,8 @@ This Java application manages customers, products, and orders. It demonstrates O
 
 ## Running the Application:
 
+1. clone repo to your local machine: https://github.com/Umuzi-skillslab/merchant-order-desk-and-catalogue-engine-mmasellomanabile-umuzi.git
+
 # Running in the terminal:
 
 1. Open a terminal in the "Project_root" folder.
