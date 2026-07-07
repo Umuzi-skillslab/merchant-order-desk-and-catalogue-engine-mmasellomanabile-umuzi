@@ -24,15 +24,19 @@ This Java application manages customers, products, and orders. It demonstrates O
 - Maven
 - VS Code
 
-## Running the Application
+## Running the Application:
 
-1. Open a terminal in the project root (the folder containing `pom.xml`).
+# Running in the terminal:
 
-2. on Git bash, run this command :
+1. Open a terminal in the Project root folder.
 
+2. on Git bash or in the terminal, run these commands :
 
+cd "Project_root"
 mvn clean compile
 mvn exec:java
+
+NB: alternatively, you can open the file "PaynestApplication.java" and hit the "run" button, order summary will be in output terminal. 
 
 # Author
 

@@ -33,7 +33,7 @@ public class Order {
     public double calculateTotal() {
         double total = 0;
         for (OrderItem item : items) {
-            total += item.calcTotal();
+            total += item.calculateTotal();
         }
         return total;
     }
@@ -43,17 +43,21 @@ public class Order {
 
  public void printSummary() {
     System.out.println("Order Summary:");
+    System.out.println("*********************************");
     System.out.println("Customer: " + customer.getName());
 
     
     for (OrderItem item : items) {
         String name = item.getProduct().getName();
         int qty = item.getQuantity();
-        double subtotal = item.calcTotal();
+        double subtotal = item.calculateTotal();
 
         System.out.println(name + " x" + qty + " = R" + subtotal);
  }
 
+
+System.out.println("Thank you for choosing us " + customer.getName());
+System.out.println("****************************************");
  System.out.println(" Your total is: R" + calculateTotal());
 }
 }
