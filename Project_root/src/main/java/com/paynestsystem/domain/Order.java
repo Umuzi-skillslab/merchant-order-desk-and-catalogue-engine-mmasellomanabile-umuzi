@@ -55,7 +55,7 @@ public class Order {
         System.out.println(name + " x" + qty + " = R" + subtotal);
  }
 
-
+System.out.println("****************************************");
 System.out.println("Thank you for choosing us " + customer.getName());
 System.out.println("****************************************");
  System.out.println(" Your total is: R" + calculateTotal());

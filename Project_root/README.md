@@ -28,7 +28,7 @@ This Java application manages customers, products, and orders. It demonstrates O
 
 # Running in the terminal:
 
-1. Open a terminal in the Project root folder.
+1. Open a terminal in the "Project_root" folder.
 
 2. on Git bash or in the terminal, run these commands :
 
