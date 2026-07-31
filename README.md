@@ -47,6 +47,15 @@ Run "mvn test" in the terminal.
 -Expected output example:
 Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
 
+## Core Design: 
+
+PayNest is built with flexibility in mind. The way the checkout logic is structured makes it easy to grow without breaking the current checkout logic. 
+
+Each OrderItem knows how to calculate its own subtotal, and the Order simply adds those up.
+That means, if a user needs to add things like discounts, tax, or shipping, it can be done in new classes or services without rewriting the existing code. 
+
+The domain classes focus purely on the business rules, while, on the other hand the service layer takes care of presentation and formatting. This keeps the core clean and avoids mixing responsibilities. in the future, new features can be inserted in by extending domain classes or adding services. 
+
 # Author
 
 Mmasello Manabile
