@@ -1,35 +1,36 @@
- package com.paynestsystem.domain;
-
- 
-
-
-    //2.Customer class using the same process I used for product
+package com.paynestsystem.domain;
 
 public class Customer {
+    private final int id;
+    private final String name;
+    private final String email;
 
-    private int id;
-    private String name;
-    private String email;
-
-   public Customer (int id, String name, String email) {
+    public Customer(int id, String name, String email) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Please enter a customer's name");
+        }
+        if (email == null || email.isBlank()) {
+            throw new IllegalArgumentException("Please enter e-mail");
+        }
         this.id = id;
         this.name = name;
         this.email = email;
     }
-//getters: 
 
-    public int getId () {
+    public int getId() {
         return id;
     }
-    public String getName () {
+
+    public String getName() {
         return name;
     }
 
-    public String getEmail () {
+    public String getEmail() {
         return email;
     }
 
+    @Override
+    public String toString() {
+        return name + " <" + email + ">";
+    }
 }
-
-
-

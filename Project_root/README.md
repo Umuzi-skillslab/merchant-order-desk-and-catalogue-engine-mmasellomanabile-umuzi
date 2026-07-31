@@ -2,7 +2,7 @@
 
 # Overview
 
-This Java application manages customers, products, and orders. It demonstrates Object-Oriented Programming (OOP) concepts such as classes, objects, and relationships between entities.
+PayNest is a lightweight commerce kernel built in plain Java 21. It manages customers, products, and orders with clear domain objects and demonstrates solid Object‑Oriented Programming (OOP) principles. The design emphasizes separation of concerns: domain classes handle data and rules, while the service layer manages presentation and formatting.
 
 # Project Structure
 
@@ -34,7 +34,7 @@ This Java application manages customers, products, and orders. It demonstrates O
 
 2. on Git bash or in the terminal, run these commands :
 
-cd "Project_root", 
+cd Project_root, 
 mvn clean compile,
 mvn exec:java
 

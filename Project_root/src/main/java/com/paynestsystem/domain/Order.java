@@ -1,63 +1,54 @@
 package com.paynestsystem.domain;
 
-import java.util.*;
-
-//3. Order lifecycle:
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Order {
-    private int id;
-    private Customer customer;
-    private List<OrderItem> items;
+    private int id;                 
+    private Customer customer;      
+    private List<OrderItem> items;  
 
-    public Order(int id, Customer customer){
+    
+    public Order(int id, Customer customer) {
+        if (customer == null) {
+            throw new IllegalArgumentException("Customer cannot be null");
+        }
         this.id = id;
         this.customer = customer;
         this.items = new ArrayList<>();
     }
 
-    public int getId (){
+    
+    public int getId() {
         return id;
     }
-    public Customer getCustomer () {
+
+    public Customer getCustomer() {
         return customer;
     }
 
-    public void addItem(Product product, int quantity){
+    public List<OrderItem> getItems() {
+        return items; 
+    }
+
+    
+    public void addItem(Product product, int quantity) {
+        if (product == null) {
+            throw new IllegalArgumentException("Product cannot be null");
+        }
         if (quantity <= 0) {
-            System.out.println("Please add an item");
-            return;
+            throw new IllegalArgumentException("Quantity must be greater than 0");
         }
         items.add(new OrderItem(product, quantity));
     }
 
-    public double calculateTotal() {
-        double total = 0;
+
+    public BigDecimal calculateTotal() {
+        BigDecimal total = BigDecimal.ZERO;
         for (OrderItem item : items) {
-            total += item.calculateTotal();
+            total = total.add(item.calculateTotal());
         }
         return total;
     }
-//might need to add a lin to return items: list <orderitem>
-
-//Order/ print summary method:
-
- public void printSummary() {
-    System.out.println("Order Summary:");
-    System.out.println("*********************************");
-    System.out.println("Customer: " + customer.getName());
-
-    
-    for (OrderItem item : items) {
-        String name = item.getProduct().getName();
-        int qty = item.getQuantity();
-        double subtotal = item.calculateTotal();
-
-        System.out.println(name + " x" + qty + " = R" + subtotal);
- }
-
-System.out.println("****************************************");
-System.out.println("Thank you for choosing us " + customer.getName());
-System.out.println("****************************************");
- System.out.println(" Your total is: R" + calculateTotal());
-}
 }
