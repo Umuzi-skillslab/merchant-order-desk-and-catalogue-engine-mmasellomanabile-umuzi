@@ -2,21 +2,35 @@ package com.paynestsystem.domain;
 
 import java.math.BigDecimal;
 
-    public class Product {
+public class Product {
+
     private final int id;
     private final String name;
     private final BigDecimal price;
 
-    public Product(int id, String name, double price) {
+    public Product(int id, String name, BigDecimal price) {
+
         if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("Product name cannot be empty");
+            throw new IllegalArgumentException(
+                    "Product name cannot be null or blank"
+            );
         }
-        if (price < 0) {
-            throw new IllegalArgumentException("Price cannot be negative");
+
+        if (price == null) {
+            throw new IllegalArgumentException(
+                    "Product price cannot be null"
+            );
         }
+
+        if (price.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException(
+                    "Product price cannot be negative"
+            );
+        }
+
         this.id = id;
         this.name = name;
-        this.price = BigDecimal.valueOf(price);
+        this.price = price;
     }
 
     public int getId() {
@@ -29,10 +43,5 @@ import java.math.BigDecimal;
 
     public BigDecimal getPrice() {
         return price;
-    }
-
-    @Override
-    public String toString() {
-        return name + " (R" + price + ")";
     }
 }

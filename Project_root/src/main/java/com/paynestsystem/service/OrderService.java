@@ -5,22 +5,45 @@ import com.paynestsystem.domain.OrderItem;
 
 public class OrderService {
 
-    public void printOrder(Order order) {
-        System.out.println("Order Summary:");
-        System.out.println("*********************************");
-        System.out.println("Customer: " + order.getCustomer().getName());
+    public String generateOrderSummary(Order order) {
 
-        for (OrderItem item : order.getItems()) {
-            System.out.printf("%s x%d = R%.2f%n",
-                item.getProduct().getName(),
-                item.getQuantity(),
-                item.calculateTotal());
+        if (order == null) {
+            throw new IllegalArgumentException(
+                    "Order cannot be null"
+            );
         }
 
-        System.out.println("****************************************");
-        System.out.printf("Your total is: R%.2f%n", order.calculateTotal());
-          System.out.println("****************************************");
-        System.out.println("Thank you for choosing us " + order.getCustomer().getName());
-        System.out.println("****************************************");
+        StringBuilder summary = new StringBuilder();
+
+        summary.append("Order Summary:\n");
+        summary.append("*********************************\n");
+        summary.append("Order: #")
+                .append(order.getId())
+                .append("\n");
+        summary.append("Customer: ")
+                .append(order.getCustomer().getName())
+                .append("\n");
+
+        for (OrderItem item : order.getItems()) {
+            summary.append(String.format(
+                    "%s x%d = R%,.2f%n",
+                    item.getProduct().getName(),
+                    item.getQuantity(),
+                    item.calculateTotal()
+            ));
+        }
+
+        summary.append("*********************************\n");
+        summary.append(String.format(
+                "Grand Total: R%,.2f%n",
+                order.calculateTotal()
+        ));
+        summary.append("*********************************\n");
+        summary.append("Thank you for choosing us, ")
+                .append(order.getCustomer().getName())
+                .append("\n");
+        summary.append("*********************************");
+
+        return summary.toString();
     }
 }

@@ -1,2 +1,5 @@
-com\paynestsystem\domain\OrderTest.class
+com\paynestsystem\domain\ProductTest.class
 com\paynestsystem\domain\OrderItemTest.class
+com\paynestsystem\service\OrderServiceTest.class
+com\paynestsystem\domain\CustomerTest.class
+com\paynestsystem\domain\OrderTest.class
