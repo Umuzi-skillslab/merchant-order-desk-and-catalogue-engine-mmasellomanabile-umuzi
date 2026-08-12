@@ -6,6 +6,33 @@ PayNest is a lightweight commerce kernel built in plain Java 21. It manages cust
 
 # Project Structure
 
+Project_root
+  |
+  src
+  ├── main
+       └── java
+            └──com
+                └── paynestsystem
+                      └──app
+                        └── PaynestApplication.java
+                      └──domain
+                        └── Customer.java
+                        └── Order.java
+                        └── OrderItem.java
+                        └── Product.java
+                      └──service
+                        └── OrderService.java
+      ├── test
+│           └── java
+                  └── com
+                       └──paynestsystem
+                              └──domain
+                                   └── OrderItemTest.java
+                                   └── OrderTest.java
+docs
+ └── ERDiagram.png
+ 
+
 - app - Contains the main application class.
 - domain - Contains Customer, Product, Order, and OrderItem classes.
 - service- Contains business logic such as printing order details.
@@ -17,6 +44,11 @@ PayNest is a lightweight commerce kernel built in plain Java 21. It manages cust
 - Create orders
 - Add items to orders
 - Print order information
+
+## Prerequisites
+- Java 17+
+- Maven 3.9+
+- Git
 
 # Technologies
 
@@ -40,7 +72,7 @@ mvn exec:java
 
 NB: alternatively, you can open the file "PaynestApplication.java" and hit the "run" button, order summary will be in output terminal. 
 
-# Tests:
+# Run Tests:
 
 Run "mvn test" in the terminal. 
 
@@ -55,6 +87,11 @@ Each OrderItem knows how to calculate its own subtotal, and the Order simply add
 That means, if a user needs to add things like discounts, tax, or shipping, it can be done in new classes or services without rewriting the existing code. 
 
 The domain classes focus purely on the business rules, while, on the other hand the service layer takes care of presentation and formatting. This keeps the core clean and avoids mixing responsibilities. in the future, new features can be inserted in by extending domain classes or adding services. 
+
+# Design:
+Please see the Entity Relation diagram/ Class diagram:
+- Documentation/ERDiagram.png
+
 
 # Author
 
