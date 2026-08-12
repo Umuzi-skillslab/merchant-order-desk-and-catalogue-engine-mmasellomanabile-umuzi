@@ -23,42 +23,43 @@ The project demonstrates strong Object-Oriented Programming (OOP) practices by s
 
 ## Project Structure
 
-project-root
+src
+├── main
+│   └── java
+│       └── com
+│           └── paynestsystem
+│               ├── app
+│               │   └── PayNestApplication.java
+│               │
+│               ├── domain
+│               │   ├── Customer.java
+│               │   ├── Order.java
+│               │   ├── OrderItem.java
+│               │   └── Product.java
+│               │
+│               └── service
+│                   └── OrderService.java
 │
-├── src
-│   ├── main
-│   │   └── java
-│   │       └── com
-│   │           └── paynestsystem
-│   │               ├── app
-│   │               │   └── PaynestApplication.java
-│   │               ├── domain
-│   │               │   ├── Customer.java
-│   │               │   ├── Order.java
-│   │               │   ├── OrderItem.java
-│   │               │   └── Product.java
-│   │               └── service
-│   │                   └── OrderService.java
-│   │
-│   └── test
-│       └── java
-│           └── com
-│               └── paynestsystem
-│                   └── domain
-│                       ├── OrderItemTest.java
-│                       └── OrderTest.java
-│
-└── docs
-    └── ERDiagram.png
-
+└── test
+    └── java
+        └── com
+            └── paynestsystem
+                ├── domain
+                │   ├── CustomerTest.java
+                │   ├── OrderItemTest.java
+                │   ├── OrderTest.java
+                │   └── ProductTest.java
+                │
+                └── service
+                    └── OrderServiceTest.java
 
 ### Package Descriptions
 
 | Package | Description |
 |----------|-------------|
-| `app` | Contains the application entry point. |
-| `domain` | Contains core business entities such as Customer, Product, Order, and OrderItem. |
-| `service` | Contains business logic and presentation-related services. |
+| app | Contains the application entry point. |
+| domain | Contains core business entities such as Customer, Product, Order, and OrderItem. |
+| service | Contains business logic and presentation-related services. |
 
 ## Technologies Used
 
@@ -71,7 +72,7 @@ project-root
 
 Before running the project, ensure you have:
 
-- Java 17 or later
+- Java 21 or later
 - Maven 3.9 or later
 - Git
 
@@ -88,20 +89,19 @@ Navigate to the project folder:
 on bash/ terminal: 
 
 cd merchant-order-desk-and-catalogue-engine-mmasellomanabile-umuzi
+cd Project_root
 
 ## Running the Application
 
 # Option 1: Run from the Terminal
+1. Access the project via: cd Project_root
 
-1. Compile the project:
+2.  Compile the project:
 
-- on bash/terminal run: 
 mvn clean compile
 
+3. Run the application:
 
-2. Run the application:
-
-on bash/ terminal run: 
 mvn exec:java
 
 ### Option 2: Run from Your IDE
@@ -122,9 +122,7 @@ Execute all tests with:
 mvn test
 
 ### Expected Output
-
-Example: 
-Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+mvn test should finish with BUILD SUCCESS. 
 
 
 ## Core Design Principles
@@ -133,7 +131,7 @@ PayNest is designed with extensibility and maintainability in mind.
 
 ### Encapsulation
 
-Each `OrderItem` is responsible for calculating its own subtotal, ensuring that calculation logic remains close to the data it represents.
+Each OrderItem is responsible for calculating its own subtotal, ensuring that calculation logic remains close to the data it represents.
 
 ### Separation of Concerns
 
@@ -143,6 +141,20 @@ The project separates:
 - Service Layer: Formatting and presentation logic
 
 This keeps the codebase clean and easier to maintain.
+
+## Extensibility
+
+The system separates product data, order lines, order calculations, and presentation.
+
+A Product contains catalogue information such as its ID, name, and price. An
+`OrderItem` combines a product with a quantity and is responsible for calculating
+its line subtotal. The Order calculates the grand total by summing the subtotals of its order items.
+
+Because the order calculation depends on the existing product price behaviour
+rather than individual catalogue fields, new product information such as SKU, description, category, or stock information can be added to Product without rewriting the core checkout calculation.
+
+The service layer is responsible for generating the human-readable order
+summary, keeping presentation concerns separate from the domain model.
 
 ### Future Scalability
 
