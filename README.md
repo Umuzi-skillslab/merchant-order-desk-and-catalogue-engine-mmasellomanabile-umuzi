@@ -1,98 +1,175 @@
-# PayNest Merchant Order Desk and Catalogue Engine
+# PayNest Merchant Order Desk & Catalogue Engine: Capstone 1
 
-# Overview
+## Overview
 
-PayNest is a lightweight commerce kernel built in plain Java 21. It manages customers, products, and orders with clear domain objects and demonstrates solid Object‑Oriented Programming (OOP) principles. The design emphasizes separation of concerns: domain classes handle data and rules, while the service layer manages presentation and formatting.
+PayNest is a lightweight commerce engine built with **Java 21** that manages customers, products, and orders using clear domain-driven design principles.
 
-# Project Structure
+The project demonstrates strong **Object-Oriented Programming (OOP)** practices by separating domain logic from presentation concerns. Domain classes encapsulate business rules and data, while the service layer handles formatting and output.
 
-Project_root
-  |
-  src
-  ├── main
-       └── java
-            └──com
-                └── paynestsystem
-                      └──app
-                        └── PaynestApplication.java
-                      └──domain
-                        └── Customer.java
-                        └── Order.java
-                        └── OrderItem.java
-                        └── Product.java
-                      └──service
-                        └── OrderService.java
-      ├── test
-│           └── java
-                  └── com
-                       └──paynestsystem
-                              └──domain
-                                   └── OrderItemTest.java
-                                   └── OrderTest.java
-docs
- └── ERDiagram.png
- 
-
-- app - Contains the main application class.
-- domain - Contains Customer, Product, Order, and OrderItem classes.
-- service- Contains business logic such as printing order details.
-
-# Features
+## Features
 
 - Create customers
+
 - Create products
+
 - Create orders
+
 - Add items to orders
-- Print order information
 
-## Prerequisites
-- Java 17+
-- Maven 3.9+
-- Git
+- Generate and display order summaries
 
-# Technologies
+- Demonstrates clean OOP design principles
 
-- Java
+---
+
+## Project Structure
+
+```text
+project-root
+│
+├── src
+│   ├── main
+│   │   └── java
+│   │       └── com
+│   │           └── paynestsystem
+│   │               ├── app
+│   │               │   └── PaynestApplication.java
+│   │               ├── domain
+│   │               │   ├── Customer.java
+│   │               │   ├── Order.java
+│   │               │   ├── OrderItem.java
+│   │               │   └── Product.java
+│   │               └── service
+│   │                   └── OrderService.java
+│   │
+│   └── test
+│       └── java
+│           └── com
+│               └── paynestsystem
+│                   └── domain
+│                       ├── OrderItemTest.java
+│                       └── OrderTest.java
+│
+└── docs
+    └── ERDiagram.png
+```
+
+### Package Descriptions
+
+| Package | Description |
+|----------|-------------|
+| `app` | Contains the application entry point. |
+| `domain` | Contains core business entities such as Customer, Product, Order, and OrderItem. |
+| `service` | Contains business logic and presentation-related services. |
+
+
+## Technologies Used
+
+- Java 21
 - Maven
+- JUnit 5
 - VS Code
 
-## Running the Application:
 
-1. clone repo to your local machine: https://github.com/Umuzi-skillslab/merchant-order-desk-and-catalogue-engine-mmasellomanabile-umuzi.git
 
-# Running in the terminal:
+## Prerequisites
 
-1. Open a terminal and access the "Project_root" folder. 
+Before running the project, ensure you have:
 
-2. on Git bash or in the terminal, run these commands :
+- Java 17 or later
+- Maven 3.9 or later
+- Git
 
-cd Project_root, 
-mvn clean compile,
+## Getting Started
+
+### Clone the Repository
+on bash/terminal: 
+
+git clone https://github.com/Umuzi-skillslab/merchant-order-desk-and-catalogue-engine-mmasellomanabile-umuzi.git
+
+
+Navigate to the project folder:
+
+on bash/ terminal: 
+
+cd merchant-order-desk-and-catalogue-engine-mmasellomanabile-umuzi
+
+## Running the Application
+
+# Option 1: Run from the Terminal
+
+1. Compile the project:
+
+- on bash/terminal run: 
+mvn clean compile
+
+
+2. Run the application:
+
+on bash/ terminal run: 
 mvn exec:java
 
-NB: alternatively, you can open the file "PaynestApplication.java" and hit the "run" button, order summary will be in output terminal. 
+### Option 2: Run from Your IDE
 
-# Run Tests:
+Open:
+PaynestApplication.java
 
-Run "mvn test" in the terminal. 
+and click "Run".
 
--Expected output example:
+The generated order summary will be displayed in the console/output terminal.
+
+
+## Running Tests
+
+Execute all tests with:
+
+* On bash run: 
+mvn test
+
+### Expected Output
+
+Example: 
 Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
 
-## Core Design: 
 
-PayNest is built with flexibility in mind. The way the checkout logic is structured makes it easy to grow without breaking the current checkout logic. 
+## Core Design Principles
 
-Each OrderItem knows how to calculate its own subtotal, and the Order simply adds those up.
-That means, if a user needs to add things like discounts, tax, or shipping, it can be done in new classes or services without rewriting the existing code. 
+PayNest is designed with extensibility and maintainability in mind.
 
-The domain classes focus purely on the business rules, while, on the other hand the service layer takes care of presentation and formatting. This keeps the core clean and avoids mixing responsibilities. in the future, new features can be inserted in by extending domain classes or adding services. 
+### Encapsulation
 
-# Design:
-Please see the Entity Relation diagram/ Class diagram:
-- Documentation/ERDiagram.png
+Each `OrderItem` is responsible for calculating its own subtotal, ensuring that calculation logic remains close to the data it represents.
+
+### Separation of Concerns
+
+The project separates:
+
+- Domain Layer: Business rules and data models
+- Service Layer: Formatting and presentation logic
+
+This keeps the codebase clean and easier to maintain.
+
+### Future Scalability
+
+The current design makes it straightforward to add features such as:
+
+- Discounts
+- Taxes
+- Shipping costs
+- Promotions
+- Additional reporting services
+
+These enhancements can be introduced through new classes or services without changing the existing order-processing logic.
 
 
-# Author
+## System Design
+
+The project's Entity Relationship/Class Diagram can be found here:
+
+docs/ERDiagram.png
+
+
+
+## Learner
 
 Mmasello Manabile
