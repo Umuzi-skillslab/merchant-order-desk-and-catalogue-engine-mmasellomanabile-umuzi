@@ -2,9 +2,9 @@
 
 ## Overview
 
-PayNest is a lightweight commerce engine built with **Java 21** that manages customers, products, and orders using clear domain-driven design principles.
+PayNest is a lightweight commerce engine built with Java 21 that manages customers, products, and orders using clear domain-driven design principles.
 
-The project demonstrates strong **Object-Oriented Programming (OOP)** practices by separating domain logic from presentation concerns. Domain classes encapsulate business rules and data, while the service layer handles formatting and output.
+The project demonstrates strong Object-Oriented Programming (OOP) practices by separating domain logic from presentation concerns. Domain classes encapsulate business rules and data, while the service layer handles formatting and output.
 
 ## Features
 
@@ -20,11 +20,9 @@ The project demonstrates strong **Object-Oriented Programming (OOP)** practices 
 
 - Demonstrates clean OOP design principles
 
----
 
 ## Project Structure
 
-```text
 project-root
 │
 ├── src
@@ -52,7 +50,7 @@ project-root
 │
 └── docs
     └── ERDiagram.png
-```
+
 
 ### Package Descriptions
 
@@ -62,15 +60,12 @@ project-root
 | `domain` | Contains core business entities such as Customer, Product, Order, and OrderItem. |
 | `service` | Contains business logic and presentation-related services. |
 
-
 ## Technologies Used
 
 - Java 21
 - Maven
 - JUnit 5
 - VS Code
-
-
 
 ## Prerequisites
 
