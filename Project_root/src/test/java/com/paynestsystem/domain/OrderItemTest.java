@@ -1,39 +1,84 @@
 package com.paynestsystem.domain;
 
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.math.BigDecimal;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class OrderItemTest {
 
     @Test
     void testCalculateTotal() {
+<<<<<<< HEAD
         Product prod = new Product(1, "Keyboard", BigDecimal.valueOf(300));
         OrderItem item = new OrderItem(prod, 3);
+=======
+>>>>>>> 3b5781837c91bf811c4d126f2add762352413bef
 
-        // Use compareTo to ignore scale differences (900 vs 900.0)
-        assertEquals(0, item.calculateTotal().compareTo(BigDecimal.valueOf(900)),
-            "3 Keyboards at R300 each should total R900.00");
+        Product product = new Product(
+                1,
+                "Keyboard",
+                new BigDecimal("300.00")
+        );
+
+        OrderItem item = new OrderItem(product, 3);
+
+        assertEquals(
+                new BigDecimal("900.00"),
+                item.calculateTotal(),
+                "3 Keyboards at R300 each should total R900.00"
+        );
+    }
+
+    @Test
+    void testDecimalPriceCalculation() {
+
+        Product product = new Product(
+                2,
+                "USB Cable",
+                new BigDecimal("99.99")
+        );
+
+        OrderItem item = new OrderItem(product, 3);
+
+        assertEquals(
+                new BigDecimal("299.97"),
+                item.calculateTotal(),
+                "3 USB cables at R99.99 should total R299.97"
+        );
     }
 
     @Test
     void testInvalidQuantityThrowsException() {
+<<<<<<< HEAD
         Product prod = new Product(1, "Mouse", BigDecimal.valueOf(150));
+=======
+>>>>>>> 3b5781837c91bf811c4d126f2add762352413bef
 
-        assertThrows(IllegalArgumentException.class,
-            () -> new OrderItem(prod, 0),
-            "Quantity of 0 should throw exception");
+        Product product = new Product(
+                3,
+                "Mouse",
+                new BigDecimal("150.00")
+        );
 
-        assertThrows(IllegalArgumentException.class,
-            () -> new OrderItem(prod, -5),
-            "Negative quantity should throw exception");
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new OrderItem(product, 0)
+        );
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new OrderItem(product, -5)
+        );
     }
 
     @Test
     void testNullProductThrowsException() {
-        assertThrows(IllegalArgumentException.class,
-            () -> new OrderItem(null, 2),
-            "Null product should throw exception");
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new OrderItem(null, 2)
+        );
     }
 }
