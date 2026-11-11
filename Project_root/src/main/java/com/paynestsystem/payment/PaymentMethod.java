@@ -1,4 +1,4 @@
-// PaymentMethod.java
+
 package com.paynestsystem.payment;
 
 import java.math.BigDecimal;

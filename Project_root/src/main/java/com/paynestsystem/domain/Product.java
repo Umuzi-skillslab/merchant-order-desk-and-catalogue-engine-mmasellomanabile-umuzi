@@ -1,3 +1,4 @@
+
 package com.paynestsystem.domain;
 
 import java.math.BigDecimal;
@@ -22,21 +23,24 @@ public class Product {
             throw new IllegalArgumentException("Price cannot be negative");
         }
 
-        if (price.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException(
-                    "Product price cannot be negative"
-            );
-        }
-
         this.id = id;
         this.name = name;
+
         // Rounding policy: prices are stored to 2 decimal places, HALF_UP.
         this.price = price.setScale(2, RoundingMode.HALF_UP);
     }
 
-    public int getId() { return id; }
-    public String getName() { return name; }
-    public BigDecimal getPrice() { return price; }
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
 
     @Override
     public String toString() {

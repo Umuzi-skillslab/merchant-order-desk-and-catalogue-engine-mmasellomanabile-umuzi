@@ -17,20 +17,26 @@ merchant-order-desk-and-catalogue-engine-mmasellomanabile-umuzi/
         ├── main/java/com/paynestsystem/
         │   ├── app/         PaynestApplication (demo entry point)
         │   ├── domain/      Customer, Product, Order, OrderItem
-        │   ├── service/     OrderService (prints the order summary)
+        │   ├── service/     OrderService (generates formatted order summaries)
         │   └── payment/     PaymentMethod, CardPayment, EftPayment,
         │                    WalletPayment, PaymentProcessor
         └── test/java/com/paynestsystem/
-            ├── domain/      OrderCheckoutTest, OrderItemTest,
-            │                OrderTest, ProductTest
-            └── payment/     PaymentMethodTest
+                ├── domain/
+                │   ├── OrderCheckoutTest
+                │   ├── OrderItemTest
+                │   ├── OrderTest
+                │   └── ProductTest
+                ├── payment/
+                │   └── PaymentMethodTest
+                └── service/
+                    └── OrderServiceTest
 ```
 
 | Package | Description |
 |---------|-------------|
 | app | Contains the application entry point. |
 | domain | Contains the core business entities: Customer, Product, Order and OrderItem. |
-| service | Contains presentation logic, such as printing the order summary. |
+| service | Contains presentation logic, such as generating formatted order summaries. |
 | payment | Contains the `PaymentMethod` interface, its rail implementations and the `PaymentProcessor`. |
 
 ## Features
@@ -69,8 +75,6 @@ cd merchant-order-desk-and-catalogue-engine-mmasellomanabile-umuzi
 cd Project_root
 ```
 
-The `Project_root` folder is the one that contains `pom.xml`. Run all of the commands below from there.
-
 ## Running the Application
 
 ### Option 1: Run from the terminal
@@ -104,23 +108,25 @@ Your total is: R3200.00
 ****************************************
 Thank you for choosing us Maxine Ramokgopa
 ****************************************
-Processing card payment for R3200.00
-Payment successful via CARD
+Processing wallet payment for R3200.00
+Payment successful via WALLET
 Amount: R3200.00
 Order completed successfully.
 ```
 
-Please note: amounts use your system's regional settings for the decimal separator, so on a South African locale you will see `R3200,00` instead of `R3200.00`. This is expected.
+Please note: Currency formatting may vary depending on the system locale and application formatting configuration. The examples above show the output from the tested environment (For instances it displays as R3200.00 in South Africa, but may be R3200,00 elsewhere).
 
 ## Tests
 
 Run this from `Project_root`:
 
 ```bash
-mvn test
+mvn clean test
 ```
+Tests run: 27, Failures: 0, Errors: 0, Skipped: 0
+BUILD SUCCESS
 
-Expected result: `BUILD SUCCESS` with no failures or errors. The tests cover:
+The tests cover the following:
 
 - line and order totals, invalid quantities and null products
 - product and customer validation, and price rounding
@@ -247,7 +253,7 @@ classDiagram
         -String email
     }
     class OrderService {
-        +printOrder(Order)
+        +generateOrderSummary(Order)
     }
 
     PaymentMethod <|.. CardPayment

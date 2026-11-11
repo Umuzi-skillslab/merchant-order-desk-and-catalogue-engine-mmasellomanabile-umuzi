@@ -1,4 +1,4 @@
-// src/test/java/com/paynestsystem/domain/OrderCheckoutTest.java
+
 package com.paynestsystem.domain;
 
 import static org.junit.jupiter.api.Assertions.*;

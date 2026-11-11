@@ -1,4 +1,3 @@
-// src/test/java/com/paynestsystem/payment/PaymentMethodTest.java
 package com.paynestsystem.payment;
 
 import static org.junit.jupiter.api.Assertions.*;
