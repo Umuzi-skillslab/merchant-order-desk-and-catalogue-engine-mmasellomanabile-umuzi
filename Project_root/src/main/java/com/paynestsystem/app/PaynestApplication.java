@@ -4,8 +4,6 @@ import com.paynestsystem.domain.Customer;
 import com.paynestsystem.domain.Order;
 import com.paynestsystem.domain.Product;
 import com.paynestsystem.service.OrderService;
-
-<<<<<<< HEAD
 import com.paynestsystem.payment.PaymentMethod;
 import com.paynestsystem.payment.CardPayment;
 import com.paynestsystem.payment.EftPayment;
@@ -23,31 +21,6 @@ public class PaynestApplication {
                 new Customer(1,
                         "Maxine Ramokgopa",
                         "maxineR@umuzi.org");
-=======
-import java.math.BigDecimal;
-
-public class PayNestApplication {
-
-    public static void main(String[] args) {
-
-        Product prod1 = new Product(
-                1,
-                "Headsets",
-                new BigDecimal("1100.00")
-        );
-
-        Product prod2 = new Product(
-                2,
-                "Keyboard",
-                new BigDecimal("200.00")
-        );
-
-        Customer customer = new Customer(
-                1,
-                "Maxine Ramokgopa",
-                "maxineR@umuzi.org"
-        );
->>>>>>> 3b5781837c91bf811c4d126f2add762352413bef
 
         Order order = new Order(1, customer);
 
@@ -55,19 +28,12 @@ public class PayNestApplication {
         order.addItem(prod2, 4);
 
         OrderService service = new OrderService();
-<<<<<<< HEAD
-        service.printOrder(order);
+        System.out.println(service.generateOrderSummary(order));
 
         // Choose payment method
-        PaymentMethod paymentMethod = new CardPayment();
+        PaymentMethod paymentMethod = new WalletPayment();
 
         // Checkout
         order.checkout(paymentMethod);
-=======
-
-        System.out.println(
-                service.generateOrderSummary(order)
-        );
->>>>>>> 3b5781837c91bf811c4d126f2add762352413bef
     }
 }

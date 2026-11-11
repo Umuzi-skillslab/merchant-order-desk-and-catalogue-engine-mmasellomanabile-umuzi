@@ -8,28 +8,23 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class OrderItemTest {
 
-    @Test
-    void testCalculateTotal() {
-<<<<<<< HEAD
-        Product prod = new Product(1, "Keyboard", BigDecimal.valueOf(300));
-        OrderItem item = new OrderItem(prod, 3);
-=======
->>>>>>> 3b5781837c91bf811c4d126f2add762352413bef
+  @Test
+void testCalculateTotal() {
 
-        Product product = new Product(
-                1,
-                "Keyboard",
-                new BigDecimal("300.00")
-        );
+    Product product = new Product(
+            1,
+            "Keyboard",
+            new BigDecimal("300.00")
+    );
 
-        OrderItem item = new OrderItem(product, 3);
+    OrderItem item = new OrderItem(product, 3);
 
-        assertEquals(
-                new BigDecimal("900.00"),
-                item.calculateTotal(),
-                "3 Keyboards at R300 each should total R900.00"
-        );
-    }
+    assertEquals(
+            new BigDecimal("900.00"),
+            item.calculateTotal(),
+            "3 Keyboards at R300 each should total R900.00"
+    );
+}
 
     @Test
     void testDecimalPriceCalculation() {
@@ -51,10 +46,7 @@ public class OrderItemTest {
 
     @Test
     void testInvalidQuantityThrowsException() {
-<<<<<<< HEAD
         Product prod = new Product(1, "Mouse", BigDecimal.valueOf(150));
-=======
->>>>>>> 3b5781837c91bf811c4d126f2add762352413bef
 
         Product product = new Product(
                 3,

@@ -5,38 +5,21 @@ import java.math.RoundingMode;
 
 public class Product {
 
-<<<<<<< HEAD
-=======
-public class Product {
-
->>>>>>> 3b5781837c91bf811c4d126f2add762352413bef
     private final int id;
     private final String name;
     private final BigDecimal price;
 
     public Product(int id, String name, BigDecimal price) {
-<<<<<<< HEAD
-=======
-
->>>>>>> 3b5781837c91bf811c4d126f2add762352413bef
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException(
                     "Product name cannot be null or blank"
             );
         }
-<<<<<<< HEAD
         if (price == null) {
             throw new IllegalArgumentException("Price cannot be null");
         }
         if (price.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("Price cannot be negative");
-=======
-
-        if (price == null) {
-            throw new IllegalArgumentException(
-                    "Product price cannot be null"
-            );
->>>>>>> 3b5781837c91bf811c4d126f2add762352413bef
         }
 
         if (price.compareTo(BigDecimal.ZERO) < 0) {
@@ -47,7 +30,6 @@ public class Product {
 
         this.id = id;
         this.name = name;
-<<<<<<< HEAD
         // Rounding policy: prices are stored to 2 decimal places, HALF_UP.
         this.price = price.setScale(2, RoundingMode.HALF_UP);
     }
@@ -59,20 +41,5 @@ public class Product {
     @Override
     public String toString() {
         return name + " (R" + price + ")";
-=======
-        this.price = price;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
->>>>>>> 3b5781837c91bf811c4d126f2add762352413bef
     }
 }

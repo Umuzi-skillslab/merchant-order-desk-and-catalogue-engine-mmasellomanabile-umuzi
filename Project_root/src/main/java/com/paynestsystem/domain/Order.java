@@ -4,17 +4,10 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Collections;
 import com.paynestsystem.payment.PaymentMethod;
 import com.paynestsystem.payment.PaymentProcessor;
 
 public class Order {
-<<<<<<< HEAD
-    private final int id;                 
-    private final Customer customer;      
-    private final List<OrderItem> items;  
-=======
->>>>>>> 3b5781837c91bf811c4d126f2add762352413bef
 
     private final int id;
     private final Customer customer;
@@ -42,11 +35,7 @@ public class Order {
     }
 
     public List<OrderItem> getItems() {
-<<<<<<< HEAD
         return Collections.unmodifiableList(items); 
-=======
-        return Collections.unmodifiableList(items);
->>>>>>> 3b5781837c91bf811c4d126f2add762352413bef
     }
 
     public void addItem(Product product, int quantity) {
@@ -76,7 +65,6 @@ public class Order {
 
         return total;
     }
-<<<<<<< HEAD
 
     public void checkout(PaymentMethod paymentMethod) {
         if (paymentMethod == null) {
@@ -98,6 +86,3 @@ public class Order {
     }
 
 }
-=======
-}
->>>>>>> 3b5781837c91bf811c4d126f2add762352413bef
