@@ -3,13 +3,23 @@ package com.paynestsystem.app;
 import com.paynestsystem.domain.*;
 import com.paynestsystem.service.OrderService;
 
-public class PaynestApplication {
-    public static void main(String[] args) {
-        
-        Product prod1 = new Product(1, "Headsets", 1000);
-        Product prod2 = new Product(2, "Keyboard", 300);
+import com.paynestsystem.payment.PaymentMethod;
+import com.paynestsystem.payment.CardPayment;
+import com.paynestsystem.payment.EftPayment;
+import com.paynestsystem.payment.WalletPayment;
+import java.math.BigDecimal;
 
-        Customer customer = new Customer(1, "Maxine Ramokgopa", "maxineR@umuzi.org");
+public class PaynestApplication {
+
+    public static void main(String[] args) {
+
+        Product prod1 = new Product(1, "Headsets", BigDecimal.valueOf(1000));
+        Product prod2 = new Product(2, "Keyboard",BigDecimal.valueOf(300));
+
+        Customer customer =
+                new Customer(1,
+                        "Maxine Ramokgopa",
+                        "maxineR@umuzi.org");
 
         Order order = new Order(1, customer);
 
@@ -18,5 +28,11 @@ public class PaynestApplication {
 
         OrderService service = new OrderService();
         service.printOrder(order);
+
+        // Choose payment method
+        PaymentMethod paymentMethod = new CardPayment();
+
+        // Checkout
+        order.checkout(paymentMethod);
     }
 }

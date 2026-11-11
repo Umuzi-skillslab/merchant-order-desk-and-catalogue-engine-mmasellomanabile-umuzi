@@ -9,7 +9,7 @@ public class OrderItemTest {
 
     @Test
     void testCalculateTotal() {
-        Product prod = new Product(1, "Keyboard", 300);
+        Product prod = new Product(1, "Keyboard", BigDecimal.valueOf(300));
         OrderItem item = new OrderItem(prod, 3);
 
         // Use compareTo to ignore scale differences (900 vs 900.0)
@@ -19,7 +19,7 @@ public class OrderItemTest {
 
     @Test
     void testInvalidQuantityThrowsException() {
-        Product prod = new Product(1, "Mouse", 150);
+        Product prod = new Product(1, "Mouse", BigDecimal.valueOf(150));
 
         assertThrows(IllegalArgumentException.class,
             () -> new OrderItem(prod, 0),

@@ -3,11 +3,14 @@ package com.paynestsystem.domain;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
+import com.paynestsystem.payment.PaymentMethod;
+import com.paynestsystem.payment.PaymentProcessor;
 
 public class Order {
-    private int id;                 
-    private Customer customer;      
-    private List<OrderItem> items;  
+    private final int id;                 
+    private final Customer customer;      
+    private final List<OrderItem> items;  
 
     
     public Order(int id, Customer customer) {
@@ -29,7 +32,7 @@ public class Order {
     }
 
     public List<OrderItem> getItems() {
-        return items; 
+        return Collections.unmodifiableList(items); 
     }
 
     
@@ -51,4 +54,24 @@ public class Order {
         }
         return total;
     }
+
+    public void checkout(PaymentMethod paymentMethod) {
+        if (paymentMethod == null) {
+            throw new IllegalArgumentException("Payment method cannot be null");
+        }
+        if (items.isEmpty()) {
+            throw new IllegalStateException("Cannot check out an empty order");
+        }
+
+        BigDecimal total = calculateTotal();
+        PaymentProcessor processor = new PaymentProcessor();
+        boolean success = processor.processPayment(paymentMethod, total);
+
+        if (success) {
+            System.out.println("Order completed successfully.");
+        } else {
+            System.out.println("Order checkout failed.");
+        }
+    }
+
 }
