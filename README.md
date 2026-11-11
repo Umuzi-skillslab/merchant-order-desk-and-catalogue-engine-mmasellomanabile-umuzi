@@ -7,10 +7,10 @@ PayNest is a lightweight commerce kernel built in plain Java 21 (no frameworks).
 ## Project Structure
 
 ```
-<repository root>/
+merchant-order-desk-and-catalogue-engine-mmasellomanabile-umuzi/
 ├── README.md
 ├── .gitignore
-├── Diagram/                 design diagrams (ClassDiagram.pdf)
+├── Diagram/ ClassDiagram.pdf
 └── Project_root/
     ├── pom.xml
     └── src/
