@@ -40,6 +40,7 @@ public class OrderServiceTest {
         OrderService service = new OrderService();
 
         String summary = service.generateOrderSummary(order);
+        
 
         assertTrue(summary.contains("Order: #1"));
         assertTrue(summary.contains("Maxine Ramokgopa"));

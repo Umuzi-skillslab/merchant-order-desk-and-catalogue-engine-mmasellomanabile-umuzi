@@ -2,6 +2,7 @@ package com.paynestsystem.service;
 
 import com.paynestsystem.domain.Order;
 import com.paynestsystem.domain.OrderItem;
+import java.util.Locale;
 
 
 public class OrderService {
@@ -27,6 +28,7 @@ public class OrderService {
 
         for (OrderItem item : order.getItems()) {
             summary.append(String.format(
+                    Locale.US,
                     "%s x%d = R%,.2f%n",
                     item.getProduct().getName(),
                     item.getQuantity(),
@@ -36,6 +38,7 @@ public class OrderService {
 
         summary.append("*********************************\n");
         summary.append(String.format(
+                Locale.US,
                 "Grand Total: R%,.2f%n",
                 order.calculateTotal()
         ));
