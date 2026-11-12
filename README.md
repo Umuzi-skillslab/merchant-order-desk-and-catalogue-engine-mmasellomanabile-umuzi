@@ -39,13 +39,18 @@ merchant-order-desk-and-catalogue-engine-mmasellomanabile-umuzi/
 | service | Contains presentation logic, such as generating formatted order summaries. |
 | payment | Contains the `PaymentMethod` interface, its rail implementations and the `PaymentProcessor`. |
 
+
 ## Features
 
 - Create customers and products
 - Create orders and add items (quantities must be greater than 0)
 - Calculate the order total from its line items
 - Print a readable order summary
-- Check out with any payment rail through the `PaymentMethod` interface
+- Check out with any supported payment rail through the `PaymentMethod` interface
+- Support card, EFT and wallet payments
+- Simulate successful and failed payment transactions
+- Validate payment amounts and reject null, zero or negative values
+- Handle payment failures and display appropriate feedback
 - Reject invalid input (null or empty values, empty orders, null payment methods)
 
 ## Technologies Used
@@ -116,6 +121,14 @@ Order completed successfully.
 
 Please note: Currency formatting may vary depending on the system locale and application formatting configuration. The examples above show the output from the tested environment (For instances it displays as R3200.00 in South Africa, but may be R3200,00 elsewhere).
 
+**Example: Failed Card Payment**
+
+```text
+Card payment declined.
+Payment failed via CARD
+Please try again or select another payment method.
+```
+
 ## Tests
 
 Run this from `Project_root`:
@@ -123,20 +136,35 @@ Run this from `Project_root`:
 ```bash
 mvn clean test
 ```
-Tests run: 27, Failures: 0, Errors: 0, Skipped: 0
-BUILD SUCCESS
 
-The tests cover the following:
 
-- line and order totals, invalid quantities and null products
-- product and customer validation, and price rounding
-- every payment rail through the `PaymentMethod` interface
-- checkout charging exactly the order total (using a custom test rail)
-- failed payments, null payment methods, empty orders and the read-only item list
+# The tests cover the following:
+
+- Line and order totals, invalid quantities and null products
+
+- Product and customer validation, and price rounding
+
+- Every payment rail through the PaymentMethod interface
+
+- Checkout charging exactly the order total (using a custom test rail)
+
+- Successful and failed payment scenarios
+
+- Invalid payment amounts and null payment methods
+
+- Empty orders and the read-only item list
 
 ## How Checkout Works
 
-`Order.checkout(PaymentMethod)` calculates the order total once and passes it to `PaymentProcessor`, which calls `processPayment(amount)` on whichever rail it was given and prints the result. To switch rails, change only the line in `PaynestApplication` that creates the payment method: `new CardPayment()`, `new EftPayment()` or `new WalletPayment()`.
+`Order.checkout(PaymentMethod)` calculates the order total once and passes it to `PaymentProcessor`.
+
+`PaymentProcessor` validates the payment method and amount, then calls `processPayment(amount)` on whichever payment rail it receives.
+
+Each payment implementation handles its own processing behaviour and returns either `true` for success or `false` for failure. The processor then displays the appropriate transaction result.
+
+Card, EFT and wallet payments support simulated success and failure scenarios. The default constructors simulate successful transactions, while passing `true` to a payment constructor simulates a failed transaction.
+
+To switch payment rails, change only the line in `PaynestApplication` that creates the payment method: `new CardPayment()`, `new EftPayment()` or `new WalletPayment()`.
 
 ## Core Design
 
