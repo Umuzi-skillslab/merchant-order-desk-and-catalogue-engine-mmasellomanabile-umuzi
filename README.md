@@ -1,14 +1,25 @@
 # PayNest: Merchant Order Desk and Unified Checkout
 
-## Overview
+## 1. Overview
 
-PayNest is a lightweight commerce kernel built in plain Java 21 (no frameworks). This repository contains **Capstone 1** (Merchant Order Desk and Catalogue Engine) and **Capstone 3** (Unified Checkout Across Payment Rails).
+PayNest is a lightweight commerce kernel built using plain Java 21, without frameworks.
 
-It manages customers, products and orders, and lets an order be paid through any supported payment rail (card, EFT or wallet) using one checkout flow. The design separates concerns: domain classes hold data and business rules, the service layer handles presentation and formatting, and the payment package hides rail-specific behaviour behind a single interface.
+This repository contains **Capstone 1: Merchant Order Desk and Catalogue Engine** and **Capstone 3: Unified Checkout Across Payment Rails**.
 
-## Project Structure
+The application manages customers, products and orders. It also allows customers to pay for an order using one of three supported payment methods: card, Electronic Funds Transfer (EFT), or digital wallet.
 
-```
+All payment methods use a single checkout flow through the `PaymentMethod` interface.
+
+The design separates responsibilities:
+
+- **Domain package:** Manages business entities, validation and order calculations.
+- **Service package:** Generates formatted order summaries.
+- **Payment package:** Handles payment processing through an interface and its concrete implementations.
+- **Application package:** Demonstrates the complete order and checkout workflow.
+
+## 2. Project Structure
+
+```text
 merchant-order-desk-and-catalogue-engine-mmasellomanabile-umuzi/
 ├── README.md
 ├── .gitignore
@@ -18,81 +29,100 @@ merchant-order-desk-and-catalogue-engine-mmasellomanabile-umuzi/
     ├── pom.xml
     └── src/
         ├── main/java/com/paynestsystem/
-        │   ├── app/         PaynestApplication (demo entry point)
-        │   ├── domain/      Customer, Product, Order, OrderItem
-        │   ├── service/     OrderService (generates formatted order summaries)
-        │   └── payment/     PaymentMethod, CardPayment, EftPayment, MoneyFormat, WalletPayment,        PaymentProcessor
-        │            
+        │   ├── app/
+        │   │   └── PaynestApplication.java
+        │   ├── domain/
+        │   │   ├── Customer.java
+        │   │   ├── Product.java
+        │   │   ├── Order.java
+        │   │   └── OrderItem.java
+        │   ├── service/
+        │   │   └── OrderService.java
+        │   └── payment/
+        │       ├── PaymentMethod.java
+        │       ├── CardPayment.java
+        │       ├── EftPayment.java
+        │       ├── WalletPayment.java
+        │       ├── PaymentProcessor.java
+        │       └── MoneyFormat.java
         └── test/java/com/paynestsystem/
-                ├── domain/
-                    ├── CustomerTest
-                │   ├── OrderCheckoutTest
-                │   ├── OrderItemTest
-                │   ├── OrderTest
-                │   └── ProductTest
-                ├── payment/
-                │   └── PaymentMethodTest
-                └── service/
-                    └── OrderServiceTest
+            ├── domain/
+            │   ├── CustomerTest.java
+            │   ├── OrderCheckoutTest.java
+            │   ├── OrderItemTest.java
+            │   ├── OrderTest.java
+            │   └── ProductTest.java
+            ├── payment/
+            │   └── PaymentMethodTest.java
+            └── service/
+                └── OrderServiceTest.java
 ```
 
-| Package | Description |
-|---------|-------------|
-| app | Contains the application entry point. |
-| domain | Contains the core business entities: Customer, Product, Order and OrderItem. |
-| service | Contains presentation logic, such as generating formatted order summaries. |
-| payment | Contains the `PaymentMethod` interface, its rail implementations and the `PaymentProcessor`. |
+## 3. Features
 
-## Features
+### Customer and Product Management
+- Create customers with validated names and email addresses.
+- Create products with unique application-supplied IDs, names and prices.
+- Reject invalid customer information and negative product prices.
+- Store product prices to two decimal places.
 
-- Create customers and products
-- Create orders and add items (quantities must be greater than 0)
-- Calculate the order total from its line items
-- Print a readable order summary
-- Check out with any supported payment rail through the `PaymentMethod` interface
-- Support card, EFT and wallet payments
-- Simulate successful and failed payment transactions
-- Validate payment amounts and reject null, zero or negative values
-- Handle payment failures and display appropriate feedback
-- Reject invalid input (null or empty values, empty orders, null payment methods)
+### Order Management
+- Create orders associated with customers.
+- Add products to orders with validated quantities.
+- Calculate individual order item subtotals.
+- Calculate the grand total from order line items.
+- Protect the internal order item collection using an unmodifiable list.
+- Generate readable order summaries.
 
-## Technologies Used
+### Unified Payment Processing
+- Process payments through a common `PaymentMethod` interface.
+- Support card, EFT and wallet payment methods.
+- Simulate successful and declined transactions.
+- Validate payment methods and amounts through `PaymentProcessor`.
+- Display payment success or failure messages.
+- Prevent checkout of empty orders and zero-total orders.
+
+## 4. Technologies Used
 
 - Java 21
 - Maven
 - JUnit 5
 - VS Code
+- Git and GitHub
 
-## Prerequisites
+## 5. Prerequisites
 
-Before running the project, make sure you have:
+Before running the application, ensure that you have:
 
-- Java 21 or later (JDK)
-- Maven 3.9 or later
-- Git
+- Java Development Kit (JDK) 21 or later.
+- Apache Maven 3.9 or later.
+- Git.
 
-## Getting Started
+## 6. Getting Started
 
 ### Clone the repository
 
-In a terminal or bash window:
+Open a terminal and run:
 
 ```bash
 git clone https://github.com/Umuzi-skillslab/merchant-order-desk-and-catalogue-engine-mmasellomanabile-umuzi.git
+```
+
+Navigate to the project directory:
+
+```bash
 cd merchant-order-desk-and-catalogue-engine-mmasellomanabile-umuzi/Project_root
 ```
 
-## Running the Application
+## 7. Running the Application
 
-### Option 1: Run from the terminal
-
-1. Compile the project:
+### Step 1: Compile the project
 
 ```bash
 mvn clean compile
 ```
 
-2. Run the application:
+### Step 2: Run the application
 
 ```bash
 mvn exec:java
@@ -100,9 +130,9 @@ mvn exec:java
 
 ### Expected Output
 
-The demo builds one order and pays for it with a wallet:
+The demonstration creates an order containing two products and processes payment using the wallet payment method.
 
-```
+```text
 Order Summary:
 *********************************
 Order: #1
@@ -120,204 +150,265 @@ Amount: R3200.00
 Order completed successfully.
 ```
 
-The order summary uses US-style formatting (comma thousands separator), while the payment messages print the plain amount to two decimal places. Neither depends on the system locale.
+The order summary uses a thousands separator, while payment messages display the amount to two decimal places.
 
-**Example: Failed Card Payment** (`new CardPayment(true)`)
+## 8. Payment Architecture
 
+### PaymentMethod Interface
+
+The `PaymentMethod` interface defines the common contract for all supported payment methods.
+
+It contains two methods:
+
+```java
+boolean processPayment(BigDecimal amount);
+
+String getPaymentType();
 ```
+
+Each payment implementation provides its own processing behaviour and payment type label.
+
+### Payment Implementations
+
+| Payment class | Payment type | Description |
+|---|---|---|
+| CardPayment | CARD | Simulates card payment processing. |
+| EftPayment | EFT | Simulates an electronic funds transfer. |
+| WalletPayment | WALLET | Simulates digital wallet payment processing. |
+
+Each payment class supports simulated success and failure through its constructor.
+
+For example:
+
+```java
+PaymentMethod paymentMethod = new CardPayment();
+```
+
+To simulate a declined card transaction:
+
+```java
+PaymentMethod paymentMethod = new CardPayment(true);
+```
+
+The same approach applies to EFT and wallet payments.
+
+### PaymentProcessor
+
+`PaymentProcessor` provides a single processing method:
+
+```java
+processPayment(PaymentMethod method, BigDecimal amount)
+```
+
+It is responsible for:
+
+- Rejecting null payment methods.
+- Rejecting null, zero and negative payment amounts.
+- Delegating payment processing to the selected implementation.
+- Displaying payment success or failure messages.
+- Returning the payment result.
+
+The processor works with the `PaymentMethod` interface rather than depending on individual payment classes.
+
+### MoneyFormat
+
+`MoneyFormat` is a package-private utility class that centralises currency formatting for payment messages.
+
+It ensures that payment amounts are displayed consistently in South African Rand (R) to two decimal places.
+
+## 9. How Checkout Works
+
+The checkout process follows these steps:
+
+1. The application creates a customer, products and an order.
+2. Products are added to the order with their respective quantities.
+3. `OrderService` generates the formatted order summary.
+4. The application selects a payment method through the `PaymentMethod` interface.
+5. `Order.checkout()` calculates the order total.
+6. Empty orders are rejected, and zero-total orders are prevented from proceeding to payment.
+7. The calculated total is passed to `PaymentProcessor`.
+8. `PaymentProcessor` validates the payment method and amount.
+9. The selected payment implementation processes the transaction.
+10. The processor reports whether payment succeeded or failed.
+11. The order displays the appropriate checkout result.
+
+### Payment Failure Handling
+
+The application supports simulated payment failures.
+
+For example, a declined card transaction produces output similar to:
+
+```text
 Card payment declined.
 Payment failed via CARD
 Please try again or select another payment method.
 Order checkout failed.
 ```
 
-**Example: Order with a total of zero**
+A failed transaction does not produce a successful order completion message.
 
-```
+### Zero-Total Order
+
+An order with a total of zero cannot proceed to checkout.
+
+Example output:
+
+```text
 Order checkout failed: order total must be greater than zero.
 ```
 
-## Tests
+## 10. Validation and Business Rules
 
-Run this from `Project_root`:
+Validation is implemented across the domain and payment layers.
+
+### Domain Validation
+
+- Customer names and emails cannot be null or blank.
+- Product names cannot be null or blank.
+- Product prices cannot be null or negative.
+- Order customers cannot be null.
+- Order products cannot be null.
+- Order quantities must be greater than zero.
+- Empty orders cannot be checked out.
+
+### Payment Validation
+
+`PaymentProcessor` validates the payment method and amount before invoking a payment implementation.
+
+It rejects:
+
+- Null payment methods.
+- Null payment amounts.
+- Zero payment amounts.
+- Negative payment amounts.
+
+Invalid payment requests result in an `IllegalArgumentException`.
+
+## 11. Automated Testing
+
+The project uses JUnit 5 for automated testing.
+
+Run the tests from the `Project_root` directory:
 
 ```bash
 mvn clean test
 ```
 
-All tests should pass. At the time of writing the result is:
+### Test Coverage
 
-# What the tests cover:
+The automated tests cover:
 
-- Line and order totals, invalid quantities and null products
-- Product and customer validation, and price rounding
-- Every payment rail through the PaymentMethod interface
-- Checkout charging exactly the order total (using a custom test rail)
-- Successful payments through card, EFT and wallet
-- Declined payments through card, EFT and wallet: checkout reports failure and never says the order completed
-- Zero-total orders: checkout fails clearly and the payment rail is never called
-- Invalid payment amounts (null, zero, negative) and null payment methods
-- Empty orders and the read-only item list.
+- Customer validation.
+- Product validation and price rounding.
+- Order item calculations and invalid quantities.
+- Order total calculations.
+- Empty order checkout.
+- Successful payments using card, EFT and wallet.
+- Failed payment transactions.
+- Payment processing through the `PaymentMethod` interface.
+- Verification that checkout charges the calculated order total.
+- Invalid payment methods and payment amounts.
+- Zero-total orders.
+- Protection of the internal order item collection.
+- Order summary generation.
 
-## How Checkout Works
+### Latest Test Results
 
-## How Checkout Works
+The project was successfully tested using Maven after cloning the GitHub repository into a fresh directory.
 
-`Order.checkout(PaymentMethod)` calculates the order total once. If the total is zero, it prints a failure message and stops, so the payment rail is never called. Otherwise it passes the total to `PaymentProcessor`.
+```text
+Tests run: 30, Failures: 0, Errors: 0, Skipped: 0
 
-`PaymentProcessor` is the single place that validates the payment method and the amount (not null, greater than zero). It then calls `processPayment(amount)` on whichever rail it receives and prints the result.
+BUILD SUCCESS
+```
 
-Each rail only handles its own behaviour: its messages, its label and its simulated outcome. It returns `true` for success or `false` for failure. Because the processor has already validated the amount, the rails do not repeat that check. A small package-private helper, `MoneyFormat`, formats amounts for all payment messages.
+All 30 tests passed across seven test classes.
 
-### Validation
+## 12. Core Design Decisions
 
-Validation happens in two places:
+### Why Use an Interface Instead of One Mega-Method?
 
-- **`PaymentProcessor`** rejects a null payment method, and a null, zero or negative amount, by throwing an `IllegalArgumentException` before any rail is called.
-- **Each rail** (`CardPayment`, `EftPayment`, `WalletPayment`) also checks the amount itself and returns `false` with a rail-specific message if it is not greater than zero. This keeps every rail safe even if it is used on its own, outside the processor.
+Using one large payment method with multiple `if` or `switch` statements would make the checkout process increasingly difficult to maintain as new payment methods are introduced.
 
-### Payment rails
+The `PaymentMethod` interface provides a common contract that allows different payment implementations to be processed through the same checkout flow.
 
-| Rail | Type label | Normal message | Simulated failure message |
-|------|-----------|----------------|---------------------------|
-| `CardPayment` | `CARD` | Processing card payment for R... | Card payment declined. |
-| `EftPayment` | `EFT` | Processing EFT bank transfer for R... | EFT bank transfer failed. |
-| `WalletPayment` | `WALLET` | Processing wallet payment for R... | Wallet payment failed: Transaction declined. |
+Each concrete payment class is responsible for its own payment-specific behaviour, message and label.
 
-The `PaymentMethod` contract takes only an amount, so no rail captures card numbers or bank account details, and none are validated.
+`Order` and `PaymentProcessor` work with the interface rather than depending on specific payment implementations.
 
-## Core Design
-
-PayNest is designed with extensibility and maintainability in mind.
-
-### Design Note: Why an interface and not one mega-method
-
-A single payment method full of `if (card) ... else if (eft) ...` branches has to be edited every time a rail is added, and each edit risks breaking rails that already work. It also duplicates validation, messages and failure handling for every new rail. With the `PaymentMethod` interface, `Order` and `PaymentProcessor` depend only on the contract "process this amount", and each rail owns its own label, message and behaviour, so the dependency points from the concrete rails towards the abstraction and never the other way round. Adding a `BuyNowPayLaterPayment` rail would mean writing one new class and changing one line in `PaynestApplication`; `Order`, `PaymentProcessor`, the total calculation and the existing tests are never touched.
+This makes the system easier to extend. For example, adding a `BuyNowPayLaterPayment` implementation would require a new payment class and application wiring, without changing the existing order total calculation or payment processor.
 
 ### Encapsulation
 
-Each `OrderItem` calculates its own subtotal and the `Order` adds those up, so the calculation logic stays close to the data it belongs to.
+Each `OrderItem` calculates its own subtotal using its product price and quantity.
 
-### Separation of concerns
+The `Order` calculates the grand total by adding the subtotals of its order items.
 
-- Domain layer: business rules and data models
-- Service layer: formatting and presentation
-- Payment package: rail-specific behaviour behind one interface
+This keeps calculation responsibilities close to the relevant domain objects.
 
-This keeps the core clean and avoids mixing responsibilities.
+### Separation of Concerns
 
-### Extensibility
+The project separates responsibilities into packages:
 
-A `Product` holds catalogue information such as its ID, name and price. An `OrderItem` combines a product with a quantity and calculates its line subtotal. The `Order` calculates the grand total by summing the subtotals of its items.
+- **Domain:** Holds business entities and their validation rules.
+- **Service:** Generates formatted order summaries.
+- **Payment:** Handles payment processing and payment-specific behaviour.
+- **Application:** Demonstrates the application workflow.
 
-Because the order calculation depends on the product's price rather than on individual catalogue fields, new product information such as SKU, description, category or stock can be added to `Product` without rewriting the checkout calculation. The service layer generates the human-readable order summary, keeping presentation separate from the domain model.
+### Money Handling
 
-### Future scalability
+The starter implementation used `double` for payment amounts.
 
-The current design makes it straightforward to add features such as:
+This project uses `BigDecimal` because binary floating-point arithmetic cannot represent some decimal values exactly.
 
-- Discounts
-- Taxes
-- Shipping costs
-- Promotions
-- Additional reporting services
+Product prices are stored to two decimal places using `RoundingMode.HALF_UP`.
 
-These can be introduced through new classes or services without changing the existing order-processing logic.
+This provides more appropriate monetary precision for order calculations and payment processing.
 
-### Money handling
+## 13. Known Limitations
 
-The brief's starter code used `double`. I chose `BigDecimal` instead because binary floating-point cannot represent amounts like 0.10 exactly, and rounding errors would show up in line totals and the grand total.
+- Payments are simulated. No real payment gateway, bank account, card details or wallet balances are connected.
+- Product prices of zero are permitted, but orders with a zero total cannot be checked out.
+- Checkout does not maintain an order payment status. Calling checkout more than once can process the same order again.
+- The application does not capture or validate actual card numbers, bank account details or wallet credentials.
+- The current application demonstrates one selected payment method at a time.
 
-## Known Limitations
+## 14. Future Improvements
 
-- A product with a price of 0 is allowed. An order whose total is 0 cannot be paid: `Order.checkout` reports "Order checkout failed" and does not call any payment rail.
+Possible future extensions include:
 
-- Checkout does not mark an order as paid, so calling `checkout` twice charges twice. Order status is out of scope for these capstones.
-- Payments are simulated. Card numbers, bank account details and wallet balances are not captured or checked, because the `PaymentMethod` contract only takes an amount.
+- Introducing additional payment methods, such as Buy Now Pay Later.
+- Adding order payment status tracking.
+- Preventing repeated payment processing for completed orders.
+- Introducing discounts, taxes and shipping costs.
+- Adding stock management.
+- Integrating real payment gateways when required.
 
-## System Design
+## 15. System Design
 
-The class diagram is also available as a PDF in the `Diagram` folder: [ClassDiagram.pdf](Diagram/ClassDiagram.pdf).
+The project includes a class diagram in the `Diagram` folder.
 
-### Data model
+[View ClassDiagram.pdf](Diagram/ClassDiagram.pdf)
 
-```mermaid
-erDiagram
-    Customer ||--o{ Order : places
-    Order ||--|{ OrderItem : contains
-    Product ||--o{ OrderItem : "appears in"
-    Customer {
-        int customer_id PK
-        string name
-        string email
-    }
-    Order {
-        int order_id PK
-        int customer_id FK
-    }
-    OrderItem {
-        int order_id FK
-        int product_id FK
-        int quantity
-    }
-    Product {
-        int product_id PK
-        string name
-        decimal price
-    }
-```
+The diagram illustrates the relationships between:
 
-### Class diagram
+- Customer
+- Product
+- Order
+- OrderItem
+- OrderService
+- PaymentMethod
+- CardPayment
+- EftPayment
+- WalletPayment
+- PaymentProcessor
 
-```mermaid
-classDiagram
-    class PaymentMethod {
-        <<interface>>
-        +processPayment(BigDecimal amount) boolean
-        +getPaymentType() String
-    }
-    class CardPayment
-    class EftPayment
-    class WalletPayment
-    class PaymentProcessor {
-        +processPayment(PaymentMethod, BigDecimal) boolean
-    }
-    class Order {
-        -int id
-        +addItem(Product, int)
-        +calculateTotal() BigDecimal
-        +checkout(PaymentMethod)
-    }
-    class OrderItem {
-        -int quantity
-        +calculateTotal() BigDecimal
-    }
-    class Product {
-        -int id
-        -String name
-        -BigDecimal price
-    }
-    class Customer {
-        -int id
-        -String name
-        -String email
-    }
-    class OrderService {
-        +generateOrderSummary(Order)
-    }
+It also demonstrates the implementation relationships between the payment interface and its concrete payment classes.
 
-    PaymentMethod <|.. CardPayment
-    PaymentMethod <|.. EftPayment
-    PaymentMethod <|.. WalletPayment
-    PaymentProcessor ..> PaymentMethod : calls
-    Order ..> PaymentMethod : accepts
-    Order ..> PaymentProcessor : uses
-    Order --> Customer : placed by
-    Order "1" *-- "1..*" OrderItem : contains
-    OrderItem --> Product
-    OrderService ..> Order : prints
-```
+## 16. Author
 
-## Author
+**Mmasello Manabile**
 
-Mmasello Manabile
+PayNest – Merchant Order Desk and Unified Checkout
+
+Java 21 | Maven | JUnit 5
