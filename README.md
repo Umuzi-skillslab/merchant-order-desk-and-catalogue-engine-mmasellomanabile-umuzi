@@ -2,7 +2,9 @@
 
 ## Overview
 
-PayNest is a lightweight commerce kernel built in plain Java 21 (no frameworks). It manages customers, products and orders, and lets an order be paid through any supported payment rail (card, EFT or wallet) using one checkout flow. The design separates concerns: domain classes hold data and business rules, the service layer handles presentation and formatting, and the payment package hides rail-specific behaviour behind a single interface.
+PayNest is a lightweight commerce kernel built in plain Java 21 (no frameworks). This repository contains **Capstone 1** (Merchant Order Desk and Catalogue Engine) and **Capstone 3** (Unified Checkout Across Payment Rails).
+
+It manages customers, products and orders, and lets an order be paid through any supported payment rail (card, EFT or wallet) using one checkout flow. The design separates concerns: domain classes hold data and business rules, the service layer handles presentation and formatting, and the payment package hides rail-specific behaviour behind a single interface.
 
 ## Project Structure
 
@@ -10,7 +12,8 @@ PayNest is a lightweight commerce kernel built in plain Java 21 (no frameworks).
 merchant-order-desk-and-catalogue-engine-mmasellomanabile-umuzi/
 ├── README.md
 ├── .gitignore
-├── Diagram/ ClassDiagram.pdf
+├── Diagram/
+│   └── ClassDiagram.pdf
 └── Project_root/
     ├── pom.xml
     └── src/
@@ -39,7 +42,6 @@ merchant-order-desk-and-catalogue-engine-mmasellomanabile-umuzi/
 | domain | Contains the core business entities: Customer, Product, Order and OrderItem. |
 | service | Contains presentation logic, such as generating formatted order summaries. |
 | payment | Contains the `PaymentMethod` interface, its rail implementations and the `PaymentProcessor`. |
-
 
 ## Features
 
@@ -77,8 +79,7 @@ In a terminal or bash window:
 
 ```bash
 git clone https://github.com/Umuzi-skillslab/merchant-order-desk-and-catalogue-engine-mmasellomanabile-umuzi.git
-cd merchant-order-desk-and-catalogue-engine-mmasellomanabile-umuzi
-cd Project_root
+cd merchant-order-desk-and-catalogue-engine-mmasellomanabile-umuzi/Project_root
 ```
 
 ## Running the Application
@@ -97,11 +98,9 @@ mvn clean compile
 mvn exec:java
 ```
 
-### Option 2: Run from VS Code
-
-Open `PaynestApplication.java` and click the Run button. The output appears in the terminal.
-
 ### Expected Output
+
+The demo builds one order and pays for it with a wallet:
 
 ```
 Order Summary:
@@ -146,6 +145,7 @@ Run this from `Project_root`:
 mvn clean test
 ```
 
+All tests should pass. At the time of writing the result is:
 
 # What the tests cover:
 
@@ -169,13 +169,30 @@ mvn clean test
 
 Each rail only handles its own behaviour: its messages, its label and its simulated outcome. It returns `true` for success or `false` for failure. Because the processor has already validated the amount, the rails do not repeat that check. A small package-private helper, `MoneyFormat`, formats amounts for all payment messages.
 
-Card, EFT and wallet payments support simulated success and failure scenarios. The default constructors simulate successful transactions, while passing `true` to a payment constructor simulates a failed transaction.
+### Validation
 
-To switch payment rails, change only the line in `PaynestApplication` that creates the payment method: `new CardPayment()`, `new EftPayment()` or `new WalletPayment()`.
+Validation happens in two places:
+
+- **`PaymentProcessor`** rejects a null payment method, and a null, zero or negative amount, by throwing an `IllegalArgumentException` before any rail is called.
+- **Each rail** (`CardPayment`, `EftPayment`, `WalletPayment`) also checks the amount itself and returns `false` with a rail-specific message if it is not greater than zero. This keeps every rail safe even if it is used on its own, outside the processor.
+
+### Payment rails
+
+| Rail | Type label | Normal message | Simulated failure message |
+|------|-----------|----------------|---------------------------|
+| `CardPayment` | `CARD` | Processing card payment for R... | Card payment declined. |
+| `EftPayment` | `EFT` | Processing EFT bank transfer for R... | EFT bank transfer failed. |
+| `WalletPayment` | `WALLET` | Processing wallet payment for R... | Wallet payment failed: Transaction declined. |
+
+The `PaymentMethod` contract takes only an amount, so no rail captures card numbers or bank account details, and none are validated.
 
 ## Core Design
 
 PayNest is designed with extensibility and maintainability in mind.
+
+### Design Note: Why an interface and not one mega-method
+
+A single payment method full of `if (card) ... else if (eft) ...` branches has to be edited every time a rail is added, and each edit risks breaking rails that already work. It also duplicates validation, messages and failure handling for every new rail. With the `PaymentMethod` interface, `Order` and `PaymentProcessor` depend only on the contract "process this amount", and each rail owns its own label, message and behaviour, so the dependency points from the concrete rails towards the abstraction and never the other way round. Adding a `BuyNowPayLaterPayment` rail would mean writing one new class and changing one line in `PaynestApplication`; `Order`, `PaymentProcessor`, the total calculation and the existing tests are never touched.
 
 ### Encapsulation
 
@@ -188,10 +205,6 @@ Each `OrderItem` calculates its own subtotal and the `Order` adds those up, so t
 - Payment package: rail-specific behaviour behind one interface
 
 This keeps the core clean and avoids mixing responsibilities.
-
-### Why an interface and not one mega-method
-
-A single payment method full of `if (card) ... else if (eft) ...` branches has to be edited every time a rail is added, and each edit risks breaking rails that already work. With the `PaymentMethod` interface, `Order` and `PaymentProcessor` depend only on the contract "process this amount", and each rail owns its own label and message. Adding a `BuyNowPayLaterPayment` rail would mean writing one new class and changing one line in the demo. The order total calculation is never touched.
 
 ### Extensibility
 
@@ -220,6 +233,7 @@ The brief's starter code used `double`. I chose `BigDecimal` instead because bin
 - A product with a price of 0 is allowed. An order whose total is 0 cannot be paid: `Order.checkout` reports "Order checkout failed" and does not call any payment rail.
 
 - Checkout does not mark an order as paid, so calling `checkout` twice charges twice. Order status is out of scope for these capstones.
+- Payments are simulated. Card numbers, bank account details and wallet balances are not captured or checked, because the `PaymentMethod` contract only takes an amount.
 
 ## System Design
 
@@ -296,6 +310,7 @@ classDiagram
     PaymentMethod <|.. EftPayment
     PaymentMethod <|.. WalletPayment
     PaymentProcessor ..> PaymentMethod : calls
+    Order ..> PaymentMethod : accepts
     Order ..> PaymentProcessor : uses
     Order --> Customer : placed by
     Order "1" *-- "1..*" OrderItem : contains
