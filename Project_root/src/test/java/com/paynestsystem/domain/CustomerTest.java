@@ -75,7 +75,7 @@ public class CustomerTest {
      @Test
     void customerWithBlankDetailsIsRejected() {
         assertThrows(IllegalArgumentException.class,
-                () -> new Customer(1, "", "a@b.com"));
+                () -> new Customer(1, "", "muzi@gmail.com"));
         assertThrows(IllegalArgumentException.class,
                 () -> new Customer(1, "Sam", " "));
     }
