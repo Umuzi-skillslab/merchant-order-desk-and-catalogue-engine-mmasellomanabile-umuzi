@@ -66,7 +66,7 @@ public class Order {
         return total;
     }
 
-    public void checkout(PaymentMethod paymentMethod) {
+        public void checkout(PaymentMethod paymentMethod) {
         if (paymentMethod == null) {
             throw new IllegalArgumentException("Payment method cannot be null");
         }
@@ -75,6 +75,14 @@ public class Order {
         }
 
         BigDecimal total = calculateTotal();
+
+
+        if (total.compareTo(BigDecimal.ZERO) <= 0) {
+            System.out.println(
+                "Order checkout failed: order total must be greater than zero.");
+            return;
+        }
+
         PaymentProcessor processor = new PaymentProcessor();
         boolean success = processor.processPayment(paymentMethod, total);
 

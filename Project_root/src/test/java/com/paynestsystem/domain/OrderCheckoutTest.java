@@ -9,10 +9,10 @@ import java.io.PrintStream;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import java.util.List;
 
 class OrderCheckoutTest {
 
-    /** Test rail: records the amount it was asked to charge. */
     private static class RecordingPayment implements PaymentMethod {
         BigDecimal received;
         final boolean result;
@@ -42,6 +42,18 @@ class OrderCheckoutTest {
         order.addItem(new Product(1, "Headsets", BigDecimal.valueOf(1000)), 2);
         order.addItem(new Product(2, "Keyboard", BigDecimal.valueOf(300)), 4);
     }
+
+    private String captureCheckoutOutput(Order target, PaymentMethod rail) {
+    PrintStream original = System.out;
+    ByteArrayOutputStream captured = new ByteArrayOutputStream();
+    System.setOut(new PrintStream(captured));
+    try {
+        target.checkout(rail);
+    } finally {
+        System.setOut(original);
+    }
+    return captured.toString();
+  }
 
     @Test
     void checkoutChargesExactlyTheOrderTotal() {
@@ -87,4 +99,33 @@ class OrderCheckoutTest {
         assertThrows(UnsupportedOperationException.class,
                 () -> order.getItems().clear());
     }
+
+    @Test
+    void declinedConcreteRailReportsFailureThroughFullCheckout() {
+    List<PaymentMethod> failingRails = List.of(
+            new CardPayment(true),
+            new EftPayment(true),
+            new WalletPayment(true));
+
+    for (PaymentMethod rail : failingRails) {
+        String output = captureCheckoutOutput(order, rail);
+
+        assertTrue(output.contains("Payment failed via " + rail.getPaymentType()));
+        assertTrue(output.contains("Order checkout failed."));
+        assertFalse(output.contains("Order completed successfully."));
+    }
 }
+
+    @Test
+    void zeroTotalOrderFailsClearlyWithoutCallingTheRail() {
+        Order freeOrder = new Order(3, new Customer(3, "Lebo", "lebo@umuzi.org"));
+        freeOrder.addItem(new Product(9, "Sticker", BigDecimal.ZERO), 2);
+        RecordingPayment rail = new RecordingPayment(true);
+
+        String output = captureCheckoutOutput(freeOrder, rail);
+
+        assertTrue(output.contains("Order checkout failed"));
+        assertFalse(output.contains("Order completed successfully."));
+        assertNull(rail.received);
+    }
+} 

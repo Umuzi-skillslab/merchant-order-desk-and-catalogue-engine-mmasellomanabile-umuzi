@@ -44,4 +44,14 @@ class PaymentMethodTest {
         };
         assertFalse(new PaymentProcessor().processPayment(failing, BigDecimal.TEN));
     }
+
+    @Test
+    void processorRejectsNullAndNegativeAmounts() {
+        PaymentProcessor processor = new PaymentProcessor();
+
+        assertThrows(IllegalArgumentException.class,
+                () -> processor.processPayment(new CardPayment(), null));
+        assertThrows(IllegalArgumentException.class,
+                () -> processor.processPayment(new CardPayment(), new BigDecimal("-5")));
+  }
 }

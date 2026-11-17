@@ -1,9 +1,6 @@
-
-
 package com.paynestsystem.payment;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 /**
  * Processes payments using any PaymentMethod implementation.
@@ -49,8 +46,7 @@ public class PaymentProcessor {
             );
 
             System.out.println(
-                "Amount: R" +
-                amount.setScale(2, RoundingMode.HALF_UP).toPlainString()
+                "Amount: " + MoneyFormat.rands(amount)
             );
 
         } else {

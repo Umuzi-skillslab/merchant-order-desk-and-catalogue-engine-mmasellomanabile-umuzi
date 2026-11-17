@@ -18,10 +18,11 @@ merchant-order-desk-and-catalogue-engine-mmasellomanabile-umuzi/
         │   ├── app/         PaynestApplication (demo entry point)
         │   ├── domain/      Customer, Product, Order, OrderItem
         │   ├── service/     OrderService (generates formatted order summaries)
-        │   └── payment/     PaymentMethod, CardPayment, EftPayment,
-        │                    WalletPayment, PaymentProcessor
+        │   └── payment/     PaymentMethod, CardPayment, EftPayment, MoneyFormat, WalletPayment,        PaymentProcessor
+        │            
         └── test/java/com/paynestsystem/
                 ├── domain/
+                    ├── CustomerTest
                 │   ├── OrderCheckoutTest
                 │   ├── OrderItemTest
                 │   ├── OrderTest
@@ -105,28 +106,36 @@ Open `PaynestApplication.java` and click the Run button. The output appears in t
 ```
 Order Summary:
 *********************************
+Order: #1
 Customer: Maxine Ramokgopa
-Headsets x2 = R2000.00
-Keyboard x4 = R1200.00
-****************************************
-Your total is: R3200.00
-****************************************
-Thank you for choosing us Maxine Ramokgopa
-****************************************
+Headsets x2 = R2,000.00
+Keyboard x4 = R1,200.00
+*********************************
+Grand Total: R3,200.00
+*********************************
+Thank you for choosing us, Maxine Ramokgopa
+*********************************
 Processing wallet payment for R3200.00
 Payment successful via WALLET
 Amount: R3200.00
 Order completed successfully.
 ```
 
-Please note: Currency formatting may vary depending on the system locale and application formatting configuration. The examples above show the output from the tested environment (For instances it displays as R3200.00 in South Africa, but may be R3200,00 elsewhere).
+The order summary uses US-style formatting (comma thousands separator), while the payment messages print the plain amount to two decimal places. Neither depends on the system locale.
 
-**Example: Failed Card Payment**
+**Example: Failed Card Payment** (`new CardPayment(true)`)
 
-```text
+```
 Card payment declined.
 Payment failed via CARD
 Please try again or select another payment method.
+Order checkout failed.
+```
+
+**Example: Order with a total of zero**
+
+```
+Order checkout failed: order total must be greater than zero.
 ```
 
 ## Tests
@@ -138,29 +147,27 @@ mvn clean test
 ```
 
 
-# The tests cover the following:
+# What the tests cover:
 
 - Line and order totals, invalid quantities and null products
-
 - Product and customer validation, and price rounding
-
 - Every payment rail through the PaymentMethod interface
-
 - Checkout charging exactly the order total (using a custom test rail)
-
-- Successful and failed payment scenarios
-
-- Invalid payment amounts and null payment methods
-
-- Empty orders and the read-only item list
+- Successful payments through card, EFT and wallet
+- Declined payments through card, EFT and wallet: checkout reports failure and never says the order completed
+- Zero-total orders: checkout fails clearly and the payment rail is never called
+- Invalid payment amounts (null, zero, negative) and null payment methods
+- Empty orders and the read-only item list.
 
 ## How Checkout Works
 
-`Order.checkout(PaymentMethod)` calculates the order total once and passes it to `PaymentProcessor`.
+## How Checkout Works
 
-`PaymentProcessor` validates the payment method and amount, then calls `processPayment(amount)` on whichever payment rail it receives.
+`Order.checkout(PaymentMethod)` calculates the order total once. If the total is zero, it prints a failure message and stops, so the payment rail is never called. Otherwise it passes the total to `PaymentProcessor`.
 
-Each payment implementation handles its own processing behaviour and returns either `true` for success or `false` for failure. The processor then displays the appropriate transaction result.
+`PaymentProcessor` is the single place that validates the payment method and the amount (not null, greater than zero). It then calls `processPayment(amount)` on whichever rail it receives and prints the result.
+
+Each rail only handles its own behaviour: its messages, its label and its simulated outcome. It returns `true` for success or `false` for failure. Because the processor has already validated the amount, the rails do not repeat that check. A small package-private helper, `MoneyFormat`, formats amounts for all payment messages.
 
 Card, EFT and wallet payments support simulated success and failure scenarios. The default constructors simulate successful transactions, while passing `true` to a payment constructor simulates a failed transaction.
 
@@ -206,11 +213,12 @@ These can be introduced through new classes or services without changing the exi
 
 ### Money handling
 
-Prices are rounded to 2 decimal places (`RoundingMode.HALF_UP`) when a `Product` is created, so every line total and the grand total reconcile exactly. The brief's starter code used `double`; `BigDecimal` is used instead, as required by the assessors.
+The brief's starter code used `double`. I chose `BigDecimal` instead because binary floating-point cannot represent amounts like 0.10 exactly, and rounding errors would show up in line totals and the grand total.
 
 ## Known Limitations
 
-- A product with a price of 0 is allowed, but an order whose total is 0 cannot be checked out, because `PaymentProcessor` rejects amounts that are not greater than 0.
+- A product with a price of 0 is allowed. An order whose total is 0 cannot be paid: `Order.checkout` reports "Order checkout failed" and does not call any payment rail.
+
 - Checkout does not mark an order as paid, so calling `checkout` twice charges twice. Order status is out of scope for these capstones.
 
 ## System Design
