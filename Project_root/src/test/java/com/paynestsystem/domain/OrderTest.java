@@ -10,9 +10,7 @@ public class OrderTest {
 
     @Test
     void testAddItemAndTotal() {
-        Product prod1 = new Product(1, "Keyboard", BigDecimal.valueOf(300));
-        Product prod2 = new Product(2, "Mouse", BigDecimal.valueOf(200));
-
+        
         Product product1 = new Product(
                 1,
                 "Keyboard",

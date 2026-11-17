@@ -46,8 +46,7 @@ void testCalculateTotal() {
 
     @Test
     void testInvalidQuantityThrowsException() {
-        Product prod = new Product(1, "Mouse", BigDecimal.valueOf(150));
-
+       
         Product product = new Product(
                 3,
                 "Mouse",

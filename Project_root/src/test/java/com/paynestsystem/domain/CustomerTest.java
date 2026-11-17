@@ -71,4 +71,12 @@ public class CustomerTest {
                 )
         );
     }
+
+     @Test
+    void customerWithBlankDetailsIsRejected() {
+        assertThrows(IllegalArgumentException.class,
+                () -> new Customer(1, "", "a@b.com"));
+        assertThrows(IllegalArgumentException.class,
+                () -> new Customer(1, "Sam", " "));
+    }
 }
