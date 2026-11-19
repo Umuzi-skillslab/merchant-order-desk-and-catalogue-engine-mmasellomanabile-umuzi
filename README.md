@@ -15,6 +15,7 @@ The design separates responsibilities:
 - **Domain package:** Manages business entities, validation and order calculations.
 - **Service package:** Generates formatted order summaries.
 - **Payment package:** Handles payment processing through an interface and its concrete implementations.
+- **Util package:** Holds `MoneyFormat`, the shared currency formatting helper used by the payment classes.
 - **Application package:** Demonstrates the complete order and checkout workflow.
 
 ## 2. Project Structure
@@ -38,12 +39,13 @@ merchant-order-desk-and-catalogue-engine-mmasellomanabile-umuzi/
         │   │   └── OrderItem.java
         │   ├── service/
         │   │   └── OrderService.java
-        │   └── payment/
-        │       ├── PaymentMethod.java
-        │       ├── CardPayment.java
-        │       ├── EftPayment.java
-        │       ├── WalletPayment.java
-        │       ├── PaymentProcessor.java
+        │   ├── payment/
+        │   │   ├── PaymentMethod.java
+        │   │   ├── CardPayment.java
+        │   │   ├── EftPayment.java
+        │   │   ├── WalletPayment.java
+        │   │   └── PaymentProcessor.java
+        │   └── util/
         │       └── MoneyFormat.java
         └── test/java/com/paynestsystem/
             ├── domain/
@@ -54,8 +56,10 @@ merchant-order-desk-and-catalogue-engine-mmasellomanabile-umuzi/
             │   └── ProductTest.java
             ├── payment/
             │   └── PaymentMethodTest.java
-            └── service/
-                └── OrderServiceTest.java
+            ├── service/
+            │   └── OrderServiceTest.java
+            └── util/
+                └── MoneyFormatTest.java
 ```
 
 ## 3. Features
@@ -212,9 +216,11 @@ The processor works with the `PaymentMethod` interface rather than depending on 
 
 ### MoneyFormat
 
-`MoneyFormat` is a package-private utility class that centralises currency formatting for payment messages.
+`MoneyFormat` is a public utility class in the `com.paynestsystem.util` package. It centralises currency formatting so the payment classes do not each repeat it.
 
 It ensures that payment amounts are displayed consistently in South African Rand (R) to two decimal places.
+
+It sits in `util` rather than `payment` because currency formatting is a general helper, not a payment rule. Keeping it separate means other packages can reuse it without depending on the payment package.
 
 ## 9. How Checkout Works
 
@@ -311,18 +317,19 @@ The automated tests cover:
 - Zero-total orders.
 - Protection of the internal order item collection.
 - Order summary generation.
+- Currency formatting through `MoneyFormat`, including the R prefix and rounding to two decimal places.
 
 ### Latest Test Results
 
 The project was successfully tested using Maven after cloning the GitHub repository into a fresh directory.
 
 ```text
-Tests run: 30, Failures: 0, Errors: 0, Skipped: 0
+Tests run: 33, Failures: 0, Errors: 0, Skipped: 0
 
 BUILD SUCCESS
 ```
 
-All 30 tests passed across seven test classes.
+All 33 tests passed across eight test classes.
 
 ## 12. Core Design Decisions
 
@@ -353,6 +360,7 @@ The project separates responsibilities into packages:
 - **Domain:** Holds business entities and their validation rules.
 - **Service:** Generates formatted order summaries.
 - **Payment:** Handles payment processing and payment-specific behaviour.
+- **Util:** Holds shared helpers that are not tied to one layer, currently `MoneyFormat`.
 - **Application:** Demonstrates the application workflow.
 
 ### Money Handling
@@ -402,8 +410,9 @@ The diagram illustrates the relationships between:
 - EftPayment
 - WalletPayment
 - PaymentProcessor
+- MoneyFormat
 
-It also demonstrates the implementation relationships between the payment interface and its concrete payment classes.
+It also demonstrates the implementation relationships between the payment interface and its concrete payment classes, and shows `MoneyFormat` in the separate `util` package as a dependency of the payment classes.
 
 ## 16. Author
 
