@@ -2,9 +2,10 @@
 package com.paynestsystem.payment;
 
 import java.math.BigDecimal;
+import com.paynestsystem.util.MoneyFormat;
 
 /**
- * The user can makea payment via credit or debit card.
+ * The user can make a payment via credit or debit card.
  
  */
 
@@ -25,7 +26,7 @@ public class CardPayment implements PaymentMethod {
 
         // Simulate a declined card transaction
         if (simulateFailure) {
-            System.out.println("Card payment declined.");
+           System.out.println("Card payment declined.");
             return false;
         }
 
